@@ -1,11 +1,12 @@
 # story-setup
 
-# Update and install dependencies
+# I Prerequisite
+# 1.1 Update and install dependencies
 ```
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
 ```
-# Install Go
+# 1.2 Install Go
 ```
 cd $HOME
 VER="1.23.1"
@@ -17,6 +18,10 @@ rm "go$VER.linux-amd64.tar.gz"
 echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
 source $HOME/.bash_profile
 [ ! -d ~/go/bin ] && mkdir -p ~/go/bin
+```
+# II Installation
+
+# 1 Create story folder and move there:
 ```
 # Download Geth binaries
 ```
