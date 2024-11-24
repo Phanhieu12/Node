@@ -77,10 +77,9 @@
    seeds="6a07e2f396519b55ea05f195bac7800b451983c0@story-seed.mandragora.io:26656"
    sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.story/story/config/config.toml
 10. **Setup addrbook by ITRocket:**
-   wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/testnet/story/addrbook.json5.itrocket.net/testnet/story/addrbook.json
-
+``
+   wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/testnet/story/addrbook.json
 12. **Add maximum inbound/outbound peers:**
-
    ```bash
    sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 40/g' $HOME/.story/story/config/config.toml
    sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 10/g' $HOME/.story/story/config.toml
