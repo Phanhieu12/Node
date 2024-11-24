@@ -46,10 +46,10 @@
 4. **Install pre-built Story binary:**
    ```bash
    wget https://github.com/piplabs/story/releases/download/v0.13.0/story-linux-amd64 && \
-   tar -xvf story-linux-amd64 && \
-   mv $HOME/story/story-linux-amd64-0.13.0/story $HOME/go/bin/story && \
-   rm -rf story* && \
-   story version
+   chmod +x story-linux-amd64 && \
+   mv story-linux-amd64 $HOME/go/bin/story && \
+   $HOME/go/bin/story version
+
 
 
 5. **Initialize node:**  
