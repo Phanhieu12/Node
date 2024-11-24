@@ -19,41 +19,35 @@
    mkdir story && \
    cd story
 
-   2. Create go/bin folders, if needed:
-  ```
-  mkdir -p $HOME/go/bin
-  ```
+2. **Create go/bin folders, if needed:**
+   ```bash
+   mkdir -p $HOME/go/bin
 
-   3. Install pre-built Story-Geth binary:
-  ```
-  wget https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64 &&\
-  mv $HOME/story/geth-linux-amd64 $HOME/go/bin/story-geth && \
-  chmod +x $HOME/go/bin/story-geth && \
-  story-geth version
-  ```
+3. **Install pre-built Story-Geth binary:**
+   ```bash
+   wget https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64 &&\
+   mv $HOME/story/geth-linux-amd64 $HOME/go/bin/story-geth && \
+   chmod +x $HOME/go/bin/story-geth && \
+   story-geth version
 
-   4. Install pre-built Story binary:
-  ```
-wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/story-public/story-linux-amd64-0.11.0-aac4bfe.tar.gz && \
-tar -xvf story-linux-amd64-0.11.0-aac4bfe.tar.gz && \
-mv $HOME/story/story-linux-amd64-0.11.0-aac4bfe/story $HOME/go/bin/story && \
-rm -rf story* && \
-story version
- ```
+4. **Install pre-built Story binary:**
+   ```bash
+   wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/story-public/story-linux-amd64-0.11.0-aac4bfe.tar.gz && \
+   tar -xvf story-linux-amd64-0.11.0-aac4bfe.tar.gz && \
+   mv $HOME/story/story-linux-amd64-0.11.0-aac4bfe/story $HOME/go/bin/story && \
+   rm -rf story* && \
+   story version
 
-  5. Initialize node:
+5. **Initialize node:**
    Change "MONIKER" for your node name.
- ```
-story init --moniker "MONIKER" --network iliad
- ```
+   ```bash
+   story init --moniker "MONIKER" --network iliad
 
-  6. Check genesis:
- ```
+6. Check genesis:
+
 sha256sum ~/.story/story/config/genesis.json
- ```
 
-  7. Check validator state:
- ```
+7. Check validator state:
 cd && cat .story/story/data/priv_validator_state.json
  ```
 
