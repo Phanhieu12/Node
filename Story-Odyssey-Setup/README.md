@@ -45,102 +45,167 @@
   story-geth version
   ```
 # Download Geth binaries
-```
-cd $HOME
-rm -rf bin
-mkdir bin
-cd bin
-wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/geth-public/geth-linux-amd64-0.9.3-b224fdf.tar.gz
-tar -xvzf geth-linux-amd64-0.9.3-b224fdf.tar.gz
-mv ~/bin/geth-linux-amd64-0.9.3-b224fdf/geth ~/go/bin/
-mkdir -p ~/.story/story
-mkdir -p ~/.story/geth
-```
-# Install Story
-```
-cd $HOME
-rm -rf story
-git clone https://github.com/piplabs/story
+1. Tạo thư mục story và di chuyển vào đó
+mkdir story && \
 cd story
-git checkout v0.10.1
-go build -o story ./client
-sudo mv ~/story/story ~/go/bin/
-```
-# Initialize the Story client
-Change "MONIKER" for your node name.
-```
+
+2. Tạo các thư mục go/bin nếu cần
+mkdir -p $HOME/go/bin
+
+3. Cài đặt tệp nhị phân Story-Geth đã được xây dựng sẵn
+wget https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64 && \
+mv $HOME/story/geth-linux-amd64 $HOME/go/bin/story-geth && \
+chmod +x $HOME/go/bin/story-geth && \
+story-geth version
+
+4. Cài đặt tệp nhị phân Story đã được xây dựng sẵn
+wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/story-public/story-linux-amd64-0.11.0-aac4bfe.tar.gz && \
+tar -xvf story-linux-amd64-0.11.0-aac4bfe.tar.gz && \
+mv $HOME/story/story-linux-amd64-0.11.0-aac4bfe/story $HOME/go/bin/story && \
+rm -rf story* && \
+story version
+
+5. Khởi tạo node
 story init --moniker <MONIKER> --network iliad
-```
-# Create Geth service file
-```
-sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
-[Unit]
-Description=Story Geth daemon
-After=network-online.target
 
-[Service]
-User=$USER
-ExecStart=$(which geth) --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 0.0.0.0 --http.port 8545 --ws --ws.api eth,web3,net,txpool --ws.addr 0.0.0.0 --ws.port 8546
-Restart=on-failure
-RestartSec=3
-LimitNOFILE=65535
+6. Kiểm tra genesis
+sha256sum ~/.story/story/config/genesis.json
 
-[Install]
-WantedBy=multi-user.target
-EOF
-```
-# Create Story service file
-```
-sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
+7. Kiểm tra trạng thái validator
+cd && cat .story/story/data/priv_validator_state.json
+
+8. Thiết lập địa chỉ bên ngoài
+external_address=$(wget -qO- eth0.me)
+sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.story/story/config/config.toml
+
+9. Thêm seeds & peers
+peers="90161a7f82ce5dbfbed1a2a9d40d4103730cff0f@5.9.87.231:26656,2f372238bf86835e8ad68c0db12351833c40e8ad@story-testnet-peer.itrocket.net:26656,14ab123d59ddf69769627b3f0e7438320f7a280a@100.42.180.223:26656,e96d4dfe2871aa44a5d97bca9ac585ad16647503@84.46.255.69:26656,bb84a8e391ff9ae2d95a3ad1ab10682d39cae583@109.123.241.100:26656,ddec0d321e85749763b89a0d7fbb58f2e065fe5e@195.133.0.86:26656,cbb1693adf93b389fc66aa1443f8b542798b564a@194.233.90.165:26656,58d9968cce8cc34f3c7aa81fa51db8af4eed0e11@62.112.10.13:29657,ef9d67cd77cec42e934ee571d6092341be4ed67b@65.109.36.231:14656,cf547fa20d73025357103133043d4c0a1da7f56d@188.245.121.171:26656"
+sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/.story/story/config/config.toml
+seeds="6a07e2f396519b55ea05f195bac7800b451983c0@story-seed.mandragora.io:26656"
+sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.story/story/config/config.toml
+
+10. Thiết lập addrbook bởi ITRocket
+wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/testnet/story/addrbook.json
+
+11. Thêm số lượng tối đa inbound/outbound peers
+sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 40/g' $HOME/.story/story/config/config.toml
+sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 10/g' $HOME/.story/story/config.toml
+
+12. Thêm lọc peers "xấu"
+sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/.story/story/config.toml
+
+13. Tạo tệp dịch vụ story
+tee /etc/systemd/system/story.service > /dev/null <<EOF
 [Unit]
-Description=Story Service
+Description=Story Consensus Client
 After=network.target
-
 [Service]
 User=$USER
 WorkingDirectory=$HOME/.story/story
-ExecStart=$(which story) run
-
+ExecStart=$HOME/go/bin/story run
 Restart=on-failure
-RestartSec=5
+RestartSec=3
 LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
-```
-# Enable and start Geth service
-```
-sudo systemctl daemon-reload
-sudo systemctl enable story-geth
-sudo systemctl restart story-geth && sudo journalctl -u story-geth -f
-```
-# Enable and start Story service
-```
-sudo systemctl daemon-reload
-sudo systemctl enable story
-sudo systemctl restart story && sudo journalctl -u story -f
-```
-## Node Sync Status Checker
-```
-#!/bin/bash
-rpc_port=$(grep -m 1 -oP '^laddr = "\K[^"]+' "$HOME/.story/story/config/config.toml" | cut -d ':' -f 3)
-while true; do
-  local_height=$(curl -s localhost:$rpc_port/status | jq -r '.result.sync_info.latest_block_height')
-  network_height=$(curl -s https://story-testnet-rpc.itrocket.net/status | jq -r '.result.sync_info.latest_block_height')
 
-  if ! [[ "$local_height" =~ ^[0-9]+$ ]] || ! [[ "$network_height" =~ ^[0-9]+$ ]]; then
-    echo -e "\033[1;31mError: Invalid block height data. Retrying...\033[0m"
-    sleep 5
-    continue
-  fi
+14. Tạo tệp dịch vụ story-geth
+tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
+[Unit]
+Description=Story Geth Client
+After=network.target
+[Service]
+User=$USER
+ExecStart=$HOME/go/bin/story-geth --iliad --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port 8545 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65535
+[Install]
+WantedBy=multi-user.target
+EOF
 
-  blocks_left=$((network_height - local_height))
-  if [ "$blocks_left" -lt 0 ]; then
-    blocks_left=0
-  fi
+15. Tải lại daemon, kích hoạt story & story-geth, khởi động story & story-geth
+systemctl daemon-reload && \
+systemctl enable story && \
+systemctl enable story-geth && \
+systemctl start story && \
+systemctl start story-geth
 
-  echo -e "\033[1;33mYour Node Height:\033[1;34m $local_height\033[0m \033[1;33m| Network Height:\033[1;36m $network_height\033[0m \033[1;33m| Blocks Left:\033[1;31m $blocks_left\033[0m"
+16. Kiểm tra trạng thái story
+systemctl status story
 
-  sleep 5
-done
-```
+17. Kiểm tra trạng thái story-geth
+systemctl status story-geth
+
+18. Kiểm tra nhật ký
+journalctl -u story -f -o cat
+journalctl -u story-geth -f -o cat
+
+Snapshot bởi UTSA
+systemctl stop story && \
+systemctl stop story-geth && \
+cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup && \
+rm -rf $HOME/.story/story/data && \
+rm -rf $HOME/.story/geth/iliad/geth/chaindata && \
+curl -o - -L https://share102.utsa.tech/story/story_testnet.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/story/ && \
+curl -o - -L https://share102.utsa.tech/story/story_geth_testnet.tar.lz4 | lz4 -c -d - | tar -x -C $HOME/.story/geth/iliad/geth/ && \
+mv $HOME/.story/story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json && \
+systemctl daemon-reload && \
+systemctl restart story && \
+systemctl restart story-geth
+
+Thiết lập Validator
+Kiểm tra khóa EVM và xuất khóa riêng vào thư mục cấu hình
+story validator export --export-evm-key
+
+Tạo tệp .env để thực hiện các giao dịch như validator
+story validator export --export-evm-key --evm-key-path $HOME/.story/story/config/.env
+
+Nhận token từ Story faucet hoặc Faucet Me
+
+Tạo validator
+story validator create --stake 1000000000000000000
+
+Các lệnh hữu ích
+Kiểm tra trạng thái node
+curl localhost:26657/status | jq .result.sync_info
+
+Staking Validator
+story validator stake \
+   --validator-pubkey ${VALIDATOR_PUB_KEY_IN_BASE64} \
+   --stake ${AMOUNT_TO_STAKE_IN_WEI}
+
+Unstaking Validator
+story validator unstake \
+  --validator-pubkey ${VALIDATOR_PUB_KEY_IN_BASE64} \
+  --unstake ${AMOUNT_TO_UNSTAKE_IN_WEI}
+
+Stake-on-behalf Validator
+story validator stake-on-behalf \
+  --delegator-pubkey ${DELEGATOR_PUB_KEY_IN_BASE64} \
+  --validator-pubkey ${VALIDATOR_PUB_KEY_IN_BASE64} \
+  --stake ${AMOUNT_TO_STAKE_IN_WEI}
+
+Unstake-on-behalf Validator
+story validator unstake-on-behalf \
+  --delegator-pubkey ${DELEGATOR_PUB_KEY_IN_BASE64} \
+  --validator-pubkey ${VALIDATOR_PUB_KEY_IN_BASE64} \
+  --unstake ${AMOUNT_TO_UNSTAKE_IN_WEI}
+
+Thêm Operator
+story validator add-operator \
+  --operator ${OPERATOR_EVM_ADDRESS}
+
+Xóa Operator
+story validator remove-operator \
+  --operator ${OPERATOR_EVM_ADDRESS}
+
+Xóa Node
+sudo systemctl stop story && \
+sudo systemctl stop story-geth && \
+sudo systemctl disable story && \
+sudo systemctl disable story-geth && \
+sudo rm /etc/systemd/system/story.service && \
+sudo rm /etc/systemd/system/story-geth.service && \
+sudo systemctl
