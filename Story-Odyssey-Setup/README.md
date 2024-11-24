@@ -1,7 +1,7 @@
 # story-setup
 
-# I Prerequisite
-# 1.1 Update and install dependencies
+# I. Prerequisite
+  1.1 Update and install dependencies
 ```
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
