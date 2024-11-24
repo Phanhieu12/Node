@@ -41,8 +41,9 @@ go build -o story ./client
 sudo mv ~/story/story ~/go/bin/
 ```
 # Initialize the Story client
+Change <MONIKER> for your node name.
 ```
-story init --moniker test --network iliad
+story init --moniker <MONIKER> --network iliad
 ```
 # Create Geth service file
 ```
