@@ -48,7 +48,6 @@
    sha256sum ~/.story/story/config/genesis.json
 
   **Output should be**
-   ```bash
    18ab598bbaefaa5af5e998abe14e8660ff6fa3c63a9453f5f40f472b213ed091 /root/.story/story/config/genesis.json
 
 7. **Check validator state:**
