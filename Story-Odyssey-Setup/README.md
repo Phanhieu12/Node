@@ -1,8 +1,12 @@
-story-setup
-Update and install dependencies
+# story-setup
+
+# Update and install dependencies
+```
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
-Install Go
+```
+# Install Go
+```
 cd $HOME
 VER="1.23.1"
 wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
@@ -13,7 +17,9 @@ rm "go$VER.linux-amd64.tar.gz"
 echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
 source $HOME/.bash_profile
 [ ! -d ~/go/bin ] && mkdir -p ~/go/bin
-Download Geth binaries
+```
+# Download Geth binaries
+```
 cd $HOME
 rm -rf bin
 mkdir bin
@@ -23,7 +29,9 @@ tar -xvzf geth-linux-amd64-0.9.3-b224fdf.tar.gz
 mv ~/bin/geth-linux-amd64-0.9.3-b224fdf/geth ~/go/bin/
 mkdir -p ~/.story/story
 mkdir -p ~/.story/geth
-Install Story
+```
+# Install Story
+```
 cd $HOME
 rm -rf story
 git clone https://github.com/piplabs/story
@@ -31,9 +39,13 @@ cd story
 git checkout v0.10.1
 go build -o story ./client
 sudo mv ~/story/story ~/go/bin/
-Initialize the Story client
+```
+# Initialize the Story client
+```
 story init --moniker test --network iliad
-Create Geth service file
+```
+# Create Geth service file
+```
 sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
 [Unit]
 Description=Story Geth daemon
@@ -49,7 +61,9 @@ LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
-Create Story service file
+```
+# Create Story service file
+```
 sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
 [Unit]
 Description=Story Service
@@ -66,15 +80,21 @@ LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
-Enable and start Geth service
+```
+# Enable and start Geth service
+```
 sudo systemctl daemon-reload
 sudo systemctl enable story-geth
 sudo systemctl restart story-geth && sudo journalctl -u story-geth -f
-Enable and start Story service
+```
+# Enable and start Story service
+```
 sudo systemctl daemon-reload
 sudo systemctl enable story
 sudo systemctl restart story && sudo journalctl -u story -f
-Node Sync Status Checker
+```
+## Node Sync Status Checker
+```
 #!/bin/bash
 rpc_port=$(grep -m 1 -oP '^laddr = "\K[^"]+' "$HOME/.story/story/config/config.toml" | cut -d ':' -f 3)
 while true; do
@@ -96,3 +116,4 @@ while true; do
 
   sleep 5
 done
+```
