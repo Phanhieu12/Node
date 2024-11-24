@@ -49,7 +49,6 @@
 
    Output should be:
    18ab598bbaefaa5af5e998abe14e8660ff6fa3c63a9453f5f40f472b213ed091 /root/.story/story/config/genesis.json
-
    
 7. **Check validator state:**
    ```bash
@@ -77,17 +76,18 @@
    seeds="6a07e2f396519b55ea05f195bac7800b451983c0@story-seed.mandragora.io:26656"
    sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.story/story/config/config.toml
 10. **Setup addrbook by ITRocket:**
-``
-   wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/testnet/story/addrbook.json
+```bash
+   wget -O $HOME/.story/story/config/addrbook.json https://server-   5.itrocket.net/testnet/story/addrbook.json
+   ```
 12. **Add maximum inbound/outbound peers:**
-   ```bash
+   ```
    sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 40/g' $HOME/.story/story/config/config.toml
    sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 10/g' $HOME/.story/story/config.toml
-
-12. **Add “bad” peers filtration:**
+```
+13. **Add “bad” peers filtration**
    ```bash
    sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/.story/story/config.toml
-
+```
 13. **Create story service file:**
    ```bash
    tee /etc/systemd/system/story.service > /dev/null <<EOF
@@ -106,7 +106,7 @@
    [Install]
    WantedBy=multi-user.target
    EOF
-
+```
 14. **Create story-geth service file:**
    ```bash
    tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
@@ -123,7 +123,7 @@
    [Install]
    WantedBy=multi-user.target
    EOF
-
+```
 15. **15. **Tải lại daemon, kích hoạt story & story-geth, khởi động story & story-geth**
    ```bash
    systemctl daemon-reload && \
@@ -131,23 +131,23 @@
    systemctl enable story-geth && \
    systemctl start story && \
    systemctl start story-geth
-
+```
 16. **Check status story:**
    ```bash
    systemctl status story
-
+```
 17. **Check status story-geth:**
    ```bash
    systemctl status story-geth
-
+```
 18. **Check logs:**
    ```bash
    journalctl -u story -f -o cat
 
    journalctl -u story-geth -f -o cat
-
+```
 ## **III. Snapshot by UTSA**
-   ```bash
+   ```bash   ```
    systemctl stop story && \
    systemctl stop story-geth && \
    cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup && \
