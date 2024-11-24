@@ -11,7 +11,7 @@
 1. **Update system and install dependencies**
    ```bash
    sudo apt update && sudo apt upgrade -y
-   sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
+   sudo apt install lz4 curl iptables build-essential git wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev -y
    
 2. **Install Go**
    ```bash
