@@ -79,16 +79,16 @@
 ```bash
    wget -O $HOME/.story/story/config/addrbook.json https://server-   5.itrocket.net/testnet/story/addrbook.json
    ```
-12. **Add maximum inbound/outbound peers:**
+11. **Add maximum inbound/outbound peers:**
    ```
    sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 40/g' $HOME/.story/story/config/config.toml
    sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 10/g' $HOME/.story/story/config.toml
 ```
-13. **Add “bad” peers filtration**
+12. **Add “bad” peers filtration**
    ```bash
    sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/.story/story/config.toml
 ```
-13. **Create story service file:**
+13. **Create service file:story**
    ```bash
    tee /etc/systemd/system/story.service > /dev/null <<EOF
    [Unit]
@@ -107,7 +107,7 @@
    WantedBy=multi-user.target
    EOF
 ```
-14. **Create story-geth service file:**
+14. **Create service file:story-geth**
    ```bash
    tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
    [Unit]
@@ -124,7 +124,7 @@
    WantedBy=multi-user.target
    EOF
 ```
-15. **15. **Tải lại daemon, kích hoạt story & story-geth, khởi động story & story-geth**
+15. **Reload daemon, enable & , start & :storystory-gethstorystory-geth**
    ```bash
    systemctl daemon-reload && \
    systemctl enable story && \
@@ -143,11 +143,10 @@
 18. **Check logs:**
    ```bash
    journalctl -u story -f -o cat
-
    journalctl -u story-geth -f -o cat
 ```
 ## **III. Snapshot by UTSA**
-   ```bash   ```
+   ```bash
    systemctl stop story && \
    systemctl stop story-geth && \
    cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/story/priv_validator_state.json.backup && \
@@ -159,58 +158,71 @@
    systemctl daemon-reload && \
    systemctl restart story && \
    systemctl restart story-geth
+```
+## **IV. Validator Setup**
+1.**Check your EVM keys and export private key to config folder:**
+   ```bash
+   story validator export --export-evm-key
+   ```
+2. **Create file to execute transactions as validator:.env**
+   ```bash
+   story validator export --export-evm-key --evm-key-path $HOME/.story/story/config/.env
 
-## **III. Prerequisites**
-Kiểm tra khóa EVM và xuất khóa riêng vào thư mục cấu hình
-story validator export --export-evm-key
+3. **Faucet**
+- [Story faucet](https://faucet.story.foundation/)
+- [Faucet Me](https://story.faucetme.pro/)
 
-Tạo tệp .env để thực hiện các giao dịch như validator
-story validator export --export-evm-key --evm-key-path $HOME/.story/story/config/.env
+4. **Create validator:**
+   ```bash
+   story validator create --stake 1000000000000000000
 
-Nhận token từ Story faucet hoặc Faucet Me
+## **V. Useful commands**
+1. **Check node status:**
+   ```bash
+   curl localhost:26657/status | jq .result.sync_info
 
-Tạo validator
-story validator create --stake 1000000000000000000
+2. **Validator Staking:**
+   ```bash
+   story validator stake \
+      --validator-pubkey ${VALIDATOR_PUB_KEY_IN_BASE64} \
+      --stake ${AMOUNT_TO_STAKE_IN_WEI}
 
-Các lệnh hữu ích
-Kiểm tra trạng thái node
-curl localhost:26657/status | jq .result.sync_info
+3. **Validator Unstaking:**
+   ```bash
+   story validator unstake \
+     --validator-pubkey ${VALIDATOR_PUB_KEY_IN_BASE64} \
+     --unstake ${AMOUNT_TO_UNSTAKE_IN_WEI}
 
-Staking Validator
-story validator stake \
-   --validator-pubkey ${VALIDATOR_PUB_KEY_IN_BASE64} \
-   --stake ${AMOUNT_TO_STAKE_IN_WEI}
+4. **Validator Stake-on-behalf:**
+   ```bash
+   story validator stake-on-behalf \
+     --delegator-pubkey ${DELEGATOR_PUB_KEY_IN_BASE64} \
+     --validator-pubkey ${VALIDATOR_PUB_KEY_IN_BASE64} \
+     --stake ${AMOUNT_TO_STAKE_IN_WEI}
 
-Unstaking Validator
-story validator unstake \
-  --validator-pubkey ${VALIDATOR_PUB_KEY_IN_BASE64} \
-  --unstake ${AMOUNT_TO_UNSTAKE_IN_WEI}
+5. **Validator Unstake-on-behalf:**
+   ```bash
+   story validator unstake-on-behalf \
+     --delegator-pubkey ${DELEGATOR_PUB_KEY_IN_BASE64} \
+     --validator-pubkey ${VALIDATOR_PUB_KEY_IN_BASE64} \
+     --unstake ${AMOUNT_TO_STAKE_IN_WEI} \
 
-Stake-on-behalf Validator
-story validator stake-on-behalf \
-  --delegator-pubkey ${DELEGATOR_PUB_KEY_IN_BASE64} \
-  --validator-pubkey ${VALIDATOR_PUB_KEY_IN_BASE64} \
-  --stake ${AMOUNT_TO_STAKE_IN_WEI}
+6. **Add Operator:**
+   ```bash
+   story validator add-operator \
+     --operator ${OPERATOR_EVM_ADDRESS}
 
-Unstake-on-behalf Validator
-story validator unstake-on-behalf \
-  --delegator-pubkey ${DELEGATOR_PUB_KEY_IN_BASE64} \
-  --validator-pubkey ${VALIDATOR_PUB_KEY_IN_BASE64} \
-  --unstake ${AMOUNT_TO_UNSTAKE_IN_WEI}
-
-Thêm Operator
-story validator add-operator \
-  --operator ${OPERATOR_EVM_ADDRESS}
-
-Xóa Operator
+7. **Remove Operator:**
+   ```bash
 story validator remove-operator \
-  --operator ${OPERATOR_EVM_ADDRESS}
+     --operator ${OPERATOR_EVM_ADDRESS}
 
-Xóa Node
-sudo systemctl stop story && \
-sudo systemctl stop story-geth && \
-sudo systemctl disable story && \
-sudo systemctl disable story-geth && \
-sudo rm /etc/systemd/system/story.service && \
-sudo rm /etc/systemd/system/story-geth.service && \
-sudo systemctl
+8. **Delete Node**
+   ```bash
+   sudo systemctl stop story && \
+   sudo systemctl stop story-geth && \
+   sudo systemctl disable story && \
+   sudo systemctl disable story-geth && \
+   sudo rm /etc/systemd/system/story.service && \
+   sudo rm /etc/systemd/system/story-geth.service && \
+   sudo systemctl
