@@ -100,7 +100,7 @@
 ```
 12. **Add “bad” peers filtration**
    ```bash
-   sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/.story/story/config.toml
+   sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/.story/story/config/config.toml
 ```
 13. **Create service file:story**
    ```bash
