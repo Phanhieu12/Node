@@ -8,12 +8,12 @@
   https://github.com/piplabs/story-geth/releases
   ```
 # I. Prerequisite
-  1 Update and install dependencies
+   1 Update and install dependencies
   ```
   sudo apt update && sudo apt upgrade -y
   sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
   ```
-  2 Install Go
+   2 Install Go
   ```
   cd $HOME
   VER="1.23.1"
@@ -26,75 +26,62 @@
   source $HOME/.bash_profile
   [ ! -d ~/go/bin ] && mkdir -p ~/go/bin
   ```
-  3.
 # II Installation
-1. Tạo thư mục story và di chuyển vào đó
+  1. Create story folder and move there:
   ```
   mkdir story && \
   cd story
   ```
- 2.Create go/bin folders, if needed:
+  2. Create go/bin folders, if needed:
   ```
   mkdir -p $HOME/go/bin
   ```
- 3.Install pre-built Story-Geth binary:
+  3. Install pre-built Story-Geth binary:
   ```
   wget https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64 &&\
   mv $HOME/story/geth-linux-amd64 $HOME/go/bin/story-geth && \
   chmod +x $HOME/go/bin/story-geth && \
   story-geth version
   ```
-# Download Geth binaries
-1. Tạo thư mục story và di chuyển vào đó
-mkdir story && \
-cd story
-
-2. Tạo các thư mục go/bin nếu cần
-mkdir -p $HOME/go/bin
-
-3. Cài đặt tệp nhị phân Story-Geth đã được xây dựng sẵn
-wget https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64 && \
-mv $HOME/story/geth-linux-amd64 $HOME/go/bin/story-geth && \
-chmod +x $HOME/go/bin/story-geth && \
-story-geth version
-
-4. Cài đặt tệp nhị phân Story đã được xây dựng sẵn
+  4. Install pre-built Story binary:
+  ```
 wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/story-public/story-linux-amd64-0.11.0-aac4bfe.tar.gz && \
 tar -xvf story-linux-amd64-0.11.0-aac4bfe.tar.gz && \
 mv $HOME/story/story-linux-amd64-0.11.0-aac4bfe/story $HOME/go/bin/story && \
 rm -rf story* && \
 story version
+ ```
 
-5. Khởi tạo node
+6. Khởi tạo node
 story init --moniker <MONIKER> --network iliad
 
-6. Kiểm tra genesis
+7. Kiểm tra genesis
 sha256sum ~/.story/story/config/genesis.json
 
-7. Kiểm tra trạng thái validator
+8. Kiểm tra trạng thái validator
 cd && cat .story/story/data/priv_validator_state.json
 
-8. Thiết lập địa chỉ bên ngoài
+9. Thiết lập địa chỉ bên ngoài
 external_address=$(wget -qO- eth0.me)
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/" $HOME/.story/story/config/config.toml
 
-9. Thêm seeds & peers
+10. Thêm seeds & peers
 peers="90161a7f82ce5dbfbed1a2a9d40d4103730cff0f@5.9.87.231:26656,2f372238bf86835e8ad68c0db12351833c40e8ad@story-testnet-peer.itrocket.net:26656,14ab123d59ddf69769627b3f0e7438320f7a280a@100.42.180.223:26656,e96d4dfe2871aa44a5d97bca9ac585ad16647503@84.46.255.69:26656,bb84a8e391ff9ae2d95a3ad1ab10682d39cae583@109.123.241.100:26656,ddec0d321e85749763b89a0d7fbb58f2e065fe5e@195.133.0.86:26656,cbb1693adf93b389fc66aa1443f8b542798b564a@194.233.90.165:26656,58d9968cce8cc34f3c7aa81fa51db8af4eed0e11@62.112.10.13:29657,ef9d67cd77cec42e934ee571d6092341be4ed67b@65.109.36.231:14656,cf547fa20d73025357103133043d4c0a1da7f56d@188.245.121.171:26656"
 sed -i -e "s|^persistent_peers *=.*|persistent_peers = \"$peers\"|" $HOME/.story/story/config/config.toml
 seeds="6a07e2f396519b55ea05f195bac7800b451983c0@story-seed.mandragora.io:26656"
 sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.story/story/config/config.toml
 
-10. Thiết lập addrbook bởi ITRocket
+11. Thiết lập addrbook bởi ITRocket
 wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/testnet/story/addrbook.json
 
-11. Thêm số lượng tối đa inbound/outbound peers
+12. Thêm số lượng tối đa inbound/outbound peers
 sed -i 's/max_num_inbound_peers =.*/max_num_inbound_peers = 40/g' $HOME/.story/story/config/config.toml
 sed -i 's/max_num_outbound_peers =.*/max_num_outbound_peers = 10/g' $HOME/.story/story/config.toml
 
-12. Thêm lọc peers "xấu"
+13. Thêm lọc peers "xấu"
 sed -i -e "s/^filter_peers *=.*/filter_peers = \"true\"/" $HOME/.story/story/config.toml
 
-13. Tạo tệp dịch vụ story
+14. Tạo tệp dịch vụ story
 tee /etc/systemd/system/story.service > /dev/null <<EOF
 [Unit]
 Description=Story Consensus Client
@@ -110,7 +97,7 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 
-14. Tạo tệp dịch vụ story-geth
+15. Tạo tệp dịch vụ story-geth
 tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
 [Unit]
 Description=Story Geth Client
@@ -125,20 +112,20 @@ LimitNOFILE=65535
 WantedBy=multi-user.target
 EOF
 
-15. Tải lại daemon, kích hoạt story & story-geth, khởi động story & story-geth
+16. Tải lại daemon, kích hoạt story & story-geth, khởi động story & story-geth
 systemctl daemon-reload && \
 systemctl enable story && \
 systemctl enable story-geth && \
 systemctl start story && \
 systemctl start story-geth
 
-16. Kiểm tra trạng thái story
+17. Kiểm tra trạng thái story
 systemctl status story
 
-17. Kiểm tra trạng thái story-geth
+18. Kiểm tra trạng thái story-geth
 systemctl status story-geth
 
-18. Kiểm tra nhật ký
+19. Kiểm tra nhật ký
 journalctl -u story -f -o cat
 journalctl -u story-geth -f -o cat
 
