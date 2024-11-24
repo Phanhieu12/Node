@@ -50,11 +50,22 @@
    Output should be:
    18ab598bbaefaa5af5e998abe14e8660ff6fa3c63a9453f5f40f472b213ed091 /root/.story/story/config/genesis.json
    
-8. **Check validator state:**
+7. **Check validator state:**
    ```bash
    cd && cat .story/story/data/priv_validator_state.json
 
-9. **Thiết lập địa chỉ bên ngoài**
+   Should be at the beginning:
+
+   {
+     "height": "0",
+     "round": 0,
+     "step": 0
+   }
+   If not, run:
+   
+   story tendermint unsafe-reset-all --home $HOME/.story/story
+
+8. **Thiết lập địa chỉ bên ngoài**
    ```bash
    external_address=$(wget -qO- eth0.me)
    sed -i.bak -e "s/^external_address *=.*/external_address =                         \"$external_address:26656\"/" $HOME/.story/story/config/config.toml
