@@ -91,7 +91,7 @@
    sed -i.bak -e "s/^seeds =.*/seeds = \"$seeds\"/" $HOME/.story/story/config/config.toml
 10. **Setup addrbook by ITRocket:**
 ```bash
-   wget -O $HOME/.story/story/config/addrbook.json https://server-   5.itrocket.net/testnet/story/addrbook.json
+   wget -O $HOME/.story/story/config/addrbook.json https://server-5.itrocket.net/testnet/story/addrbook.json
    ```
 11. **Add maximum inbound/outbound peers:**
    ```
