@@ -145,8 +145,9 @@
    journalctl -u story -f -o cat
    journalctl -u story-geth -f -o cat
 ```
-
+   
 ---
+
 ## **III. Snapshot by UTSA**
    ```bash
    systemctl stop story && \
@@ -161,6 +162,9 @@
    systemctl restart story && \
    systemctl restart story-geth
 ```
+   
+---
+
 ## **IV. Validator Setup**
 1.**Check your EVM keys and export private key to config folder:**
    ```bash
@@ -177,6 +181,8 @@
 4. **Create validator:**
    ```bash
    story validator create --stake 1000000000000000000
+   
+---
 
 ## **V. Useful commands**
 1. **Check node status:**
