@@ -1,49 +1,38 @@
-# Story-Odyssey-Setup
-  *Story
-  ```
-  https://github.com/piplabs/story/releases/
-  ```
-  *Story-Geth
-  ```
-  https://github.com/piplabs/story-geth/releases
-  ```
-# I. Prerequisite
-   1 Update and install dependencies
-  ```
-  sudo apt update && sudo apt upgrade -y
-  sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
-  ```
-   2 Install Go
-  ```
-  cd $HOME
-  VER="1.23.1"
-  wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
-  sudo rm -rf /usr/local/go
-  sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
-  rm "go$VER.linux-amd64.tar.gz"
-  [ ! -f ~/.bash_profile ] && touch ~/.bash_profile
-  echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.bash_profile
-  source $HOME/.bash_profile
-  [ ! -d ~/go/bin ] && mkdir -p ~/go/bin
-  ```
+# Story Odyssey Setup
+
+## **Story Repositories**
+- [Story Releases](https://github.com/piplabs/story/releases/)
+- [Story-Geth Releases](https://github.com/piplabs/story-geth/releases)
+
+---
+
+## **I. Prerequisites**
+
+1. **Update system and install dependencies**
+   ```bash
+   sudo apt update && sudo apt upgrade -y
+   sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
 # II Installation
-  1. Create story folder and move there:
+   1. Create story folder and move there:
   ```
   mkdir story && \
   cd story
   ```
-  2. Create go/bin folders, if needed:
+
+   2. Create go/bin folders, if needed:
   ```
   mkdir -p $HOME/go/bin
   ```
-  3. Install pre-built Story-Geth binary:
+
+   3. Install pre-built Story-Geth binary:
   ```
   wget https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64 &&\
   mv $HOME/story/geth-linux-amd64 $HOME/go/bin/story-geth && \
   chmod +x $HOME/go/bin/story-geth && \
   story-geth version
   ```
-  4. Install pre-built Story binary:
+
+   4. Install pre-built Story binary:
   ```
 wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/story-public/story-linux-amd64-0.11.0-aac4bfe.tar.gz && \
 tar -xvf story-linux-amd64-0.11.0-aac4bfe.tar.gz && \
@@ -52,14 +41,21 @@ rm -rf story* && \
 story version
  ```
 
-6. Khởi tạo node
-story init --moniker <MONIKER> --network iliad
+  5. Initialize node:
+   Change "MONIKER" for your node name.
+ ```
+story init --moniker "MONIKER" --network iliad
+ ```
 
-7. Kiểm tra genesis
+  6. Check genesis:
+ ```
 sha256sum ~/.story/story/config/genesis.json
+ ```
 
-8. Kiểm tra trạng thái validator
+  7. Check validator state:
+ ```
 cd && cat .story/story/data/priv_validator_state.json
+ ```
 
 9. Thiết lập địa chỉ bên ngoài
 external_address=$(wget -qO- eth0.me)
