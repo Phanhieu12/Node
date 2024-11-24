@@ -145,6 +145,8 @@
    journalctl -u story -f -o cat
    journalctl -u story-geth -f -o cat
 ```
+
+---
 ## **III. Snapshot by UTSA**
    ```bash
    systemctl stop story && \
