@@ -222,8 +222,8 @@
 
 7. **Remove Operator:**
    ```bash
-story validator remove-operator \
-     --operator ${OPERATOR_EVM_ADDRESS}
+   story validator remove-operator \
+        --operator ${OPERATOR_EVM_ADDRESS}
 
 8. **Delete Node**
    ```bash
