@@ -38,7 +38,7 @@
    rm -rf story* && \
    story version
 
-5. **Initialize node:**
+5. **Initialize node:**  
    Change `"MONIKER"` for your node name.
    ```bash
    story init --moniker "MONIKER" --network iliad
@@ -46,7 +46,7 @@
 6. **Check genesis:**
    ```bash
    sha256sum ~/.story/story/config/genesis.json
-- Output should be:
+- Output should be:  
   18ab598bbaefaa5af5e998abe14e8660ff6fa3c63a9453f5f40f472b213ed091 /root/.story/story/config/genesis.json)
    
 7. **Check validator state:**
