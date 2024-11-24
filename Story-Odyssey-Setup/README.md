@@ -39,7 +39,7 @@
    story version
 
 5. **Initialize node:**
-   ***Change "MONIKER" for your node name.***
+   .***Change "MONIKER" for your node name.***
    ```bash
    story init --moniker "MONIKER" --network iliad
 
