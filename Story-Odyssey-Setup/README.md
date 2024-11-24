@@ -1,5 +1,12 @@
-# story-setup
-
+# Story-Odyssey-Setup
+  *Story
+  ```
+  https://github.com/piplabs/story/releases/
+  ```
+  *Story-Geth
+  ```
+  https://github.com/piplabs/story-geth/releases
+  ```
 # I. Prerequisite
   1 Update and install dependencies
   ```
@@ -19,6 +26,7 @@
   source $HOME/.bash_profile
   [ ! -d ~/go/bin ] && mkdir -p ~/go/bin
   ```
+  3.
 # II Installation
   1 Create story folder and move there:
   ```
