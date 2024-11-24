@@ -25,10 +25,11 @@ rm -rf bin
 mkdir bin
 cd bin
 wget https://github.com/piplabs/story/releases/download/v0.13.0/story-linux-amd64
-tar -xvzf story-linux-amd64
-mv ~/bin/story-linux-amd64/geth ~/go/bin/
+chmod +x story-linux-amd64
+./story-linux-amd64
 mkdir -p ~/.story/story
 mkdir -p ~/.story/geth
+
 ```
 # Install Story
 ```
