@@ -18,7 +18,6 @@
    ```bash
   mkdir story && \
   cd story
-  ```
 
    2. Create go/bin folders, if needed:
   ```
