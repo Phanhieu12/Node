@@ -28,16 +28,16 @@
   ```
   3.
 # II Installation
-  1 Create story folder and move there:
+1. Tạo thư mục story và di chuyển vào đó
   ```
   mkdir story && \
   cd story
   ```
-  2.Create go/bin folders, if needed:
+ 2.Create go/bin folders, if needed:
   ```
   mkdir -p $HOME/go/bin
   ```
-  3.Install pre-built Story-Geth binary:
+ 3.Install pre-built Story-Geth binary:
   ```
   wget https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64 &&\
   mv $HOME/story/geth-linux-amd64 $HOME/go/bin/story-geth && \
