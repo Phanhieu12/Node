@@ -12,9 +12,10 @@
    ```bash
    sudo apt update && sudo apt upgrade -y
    sudo apt install curl git wget htop tmux build-essential jq make lz4 gcc unzip -y
-# II Installation
-   1. Create story folder and move there:
-  ```
+   
+## **II. Prerequisites**
+1. **Create story folder and move there**
+   ```bash
   mkdir story && \
   cd story
   ```
