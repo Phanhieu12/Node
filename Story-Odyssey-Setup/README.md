@@ -36,7 +36,7 @@ Trước khi bắt đầu, hãy đảm bảo rằng bạn đã cài đặt các 
 ```bash
 sudo apt update
 sudo apt-get update
-sudo apt install curl git make jq build-essential gcc unzip wget lz4 aria2 -y
+sudo apt install lz4 curl iptables build-essential git wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev -y
 ```
 2.1.1 # Tạo thư mục $HOME/go/bin nếu nó chưa tồn tại
 ```bash
