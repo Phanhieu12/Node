@@ -59,7 +59,7 @@ story-geth version
 2.3. **Tải xuống và cài đặt story**
 ```bash
 # Tải xuống và giải nén tệp cài đặt
-wget https://github.com/piplabs/story/releases/download/v0.13.0/story-linux-amd64 -O /root/go/bin/story && \
+wget https://github.com/piplabs/story/releases/download/v0.12.0/story-linux-amd64 -O /root/go/bin/story && \
 chmod +x /root/go/bin/story && \
 /root/go/bin/story version
 ````
