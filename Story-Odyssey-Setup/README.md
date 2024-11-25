@@ -27,7 +27,7 @@ Trước khi bắt đầu, hãy đảm bảo rằng bạn đã cài đặt các 
 - Đảm bảo hệ thống của bạn đáp ứng các yêu cầu trên để đảm bảo hiệu suất tối ưu cho việc chạy phần mềm và dịch vụ.
 - Các yêu cầu này có thể thay đổi tùy theo phiên bản phần mềm và khối lượng công việc.
 - Hệ điều hành: Ubuntu 22.04
-- Các công cụ cơ bản: `curl`, `git`, `make`, `jq`, `build-essential`, `gcc`, `unzip`, `wget`, `lz4`, `aria2`
+- Các công cụ cơ bản: `curl`, `tar`, `wget`, `clang`, `pkg-config`, `git`, `make`, `ncdu`, `gcc`, `jq`, `chrony`
 
 ## 2. Cài đặt
 
