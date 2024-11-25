@@ -52,7 +52,7 @@ fi
 ```bash
 # Tải xuống và cài đặt
 wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64 && \
-mv $HOME/story/geth-linux-amd64 $HOME/go/bin/story-geth && \
+mv $HOME/geth-linux-amd64 $HOME/go/bin/story-geth && \
 chmod +x $HOME/go/bin/story-geth && \
 story-geth version
 ````
@@ -64,7 +64,6 @@ chmod +x story-linux-amd64 && \
 mv story-linux-amd64 $HOME/go/bin/story && \
 rm -rf story* && \
 story version
-n
 ````
 
 2.4. Khởi tạo Story
