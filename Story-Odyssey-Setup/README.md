@@ -35,33 +35,19 @@ Trước khi bắt đầu, hãy đảm bảo rằng bạn đã cài đặt các 
 ```bash
 sudo apt update
 sudo apt-get update
-sudo apt install lz4 curl iptables build-essential git golang-go wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev -y
+sudo apt install lz4 curl iptables build-essential git wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev -y
 ```
 ### A.Cài Go
 ```bash
-sudo -v
+# Tải về (ví dụ cho phiên bản Linux x64)
+wget https://go.dev/dl/go1.21.2.linux-amd64.tar.gz
 
-# Bước 1: Kiểm tra và tạo thư mục /usr/local/go nếu chưa có
-if [ ! -d "/usr/local/go" ]; then
-  echo "Directory /usr/local/go does not exist. Creating it now."
-  # Tải Go phiên bản 1.20
-  wget https://dl.google.com/go/go1.20.linux-amd64.tar.gz
-  # Giải nén vào /usr/local
-  sudo tar -C /usr/local -xzf go1.20.linux-amd64.tar.gz
-  # Xóa tệp tar.gz để giải phóng dung lượng
-  rm go1.20.linux-amd64.tar.gz
-fi
+# Giải nén Go vào /usr/local (đảm bảo đã xóa thư mục go cũ)
+sudo tar -C /usr/local -xvzf go1.21.2.linux-amd64.tar.gz
 
-# Bước 2: Tạo liên kết mềm từ /usr/local/go/bin/go tới /usr/bin/go
-sudo ln -sf /usr/local/go/bin/go /usr/bin/go
-
-# Bước 3: Cập nhật biến môi trường PATH
-echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
-
-# Bước 4: Áp dụng thay đổi môi trường
+# Cập nhật biến môi trường
+echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.bashrc
 source ~/.bashrc
-
-# Bước 5: Kiểm tra phiên bản Go
 go version
 ````
 ### B. Kiểm tra và tạo thư mục $HOME/go/bin nếu không tồn tại
