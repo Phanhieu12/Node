@@ -38,30 +38,34 @@ sudo apt update
 sudo apt-get update
 sudo apt install lz4 curl iptables build-essential git wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev -y
 ```
-2.1.1 # **Tạo thư mục $HOME/go/bin nếu nó chưa tồn tại**
-```bash
-[ ! -d "$HOME/go/bin" ] && mkdir -p $HOME/go/bin
-
-# Thêm $HOME/go/bin vào PATH nếu nó chưa có trong .bashrc
-if ! grep -q "$HOME/go/bin" $HOME/.bashrc; then
-  echo 'export PATH=$PATH:$HOME/go/bin' >> $HOME/.bashrc
-  source $HOME/.bashrc
-fi
-````
 2.2. **Tải xuống và cài đặt story-geth**
 ```bash
 # Tải xuống và cài đặt
-wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64 && \
-mv $HOME/geth-linux-amd64 $HOME/go/bin/story-geth && \
-chmod +x $HOME/go/bin/story-geth && \
+cd $HOME
+wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
+[ ! -d "$HOME/go/bin" ] && mkdir -p $HOME/go/bin
+if ! grep -q "$HOME/go/bin" $HOME/.profile; then
+  echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.profile
+fi
+chmod +x geth-linux-amd64
+mv $HOME/geth-linux-amd64 $HOME/go/bin/story-geth
+source $HOME/.profile
 story-geth version
 ````
 2.3. **Tải xuống và cài đặt story**
 ```bash
 # Tải xuống và giải nén tệp cài đặt
-wget https://github.com/piplabs/story/releases/download/v0.12.0/story-linux-amd64 -O /root/go/bin/story && \
-chmod +x /root/go/bin/story && \
-/root/go/bin/story version
+cd $HOME
+rm -rf story-linux-amd64
+wget https://github.com/piplabs/story/releases/download/v0.12.1/story-linux-amd64
+[ ! -d "$HOME/go/bin" ] && mkdir -p $HOME/go/bin
+if ! grep -q "$HOME/go/bin" $HOME/.profile; then
+  echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.profile
+fi
+chmod +x story-linux-amd64
+sudo cp $HOME/story-linux-amd64 $HOME/go/bin/story
+source $HOME/.profile
+story version
 ````
 
 2.4. **Khởi tạo Story**
