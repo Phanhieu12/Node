@@ -90,10 +90,6 @@ LimitNOFILE=4096
 [Install]
 WantedBy=multi-user.target
 EOF
-
-[Install]
-WantedBy=multi-user.target
-EOF
 ````
 3.2. **Cấu hình dịch vụ story**
 ```bash
