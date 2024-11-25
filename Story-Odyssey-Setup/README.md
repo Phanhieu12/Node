@@ -51,7 +51,7 @@ fi
 2.2. Tải xuống và cài đặt story-geth
 ```bash
 # Tải xuống và cài đặt
-wget https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64 && \
+wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64 && \
 mv $HOME/story/geth-linux-amd64 $HOME/go/bin/story-geth && \
 chmod +x $HOME/go/bin/story-geth && \
 story-geth version
