@@ -37,12 +37,32 @@ sudo apt update
 sudo apt-get update
 sudo apt install lz4 curl iptables build-essential git golang-go wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev -y
 ```
-### a.Tạo thư mục GO
+### a.Cài Go
 ```bash
+# Kiểm tra và tạo thư mục $HOME/go/bin nếu không tồn tại
 if [ ! -d "$HOME/go/bin" ]; then
   echo "Directory $HOME/go/bin does not exist. Creating it now."
   mkdir -p "$HOME/go/bin"
 fi
+
+# Tải phiên bản Go 1.20 từ trang chính thức
+wget https://go.dev/dl/go1.20.linux-amd64.tar.gz
+
+# Giải nén tệp tải về vào thư mục $HOME/go
+sudo tar -C $HOME -xzf go1.20.linux-amd64.tar.gz
+
+# Xóa tệp tar.gz để giải phóng dung lượng
+rm go1.20.linux-amd64.tar.gz
+
+# Cập nhật PATH trong tệp .profile của người dùng
+echo 'export PATH=$PATH:$HOME/go/bin' >> ~/.profile
+
+# Áp dụng thay đổi môi trường
+source ~/.profile
+
+# Kiểm tra phiên bản Go
+go version
+
 ````
 ### b. tải và cài Cosmovisor
 ```bash
