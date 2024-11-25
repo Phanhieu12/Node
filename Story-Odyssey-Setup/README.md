@@ -80,7 +80,7 @@ After=network.target
 
 [Service]
 User=root
-ExecStart=/root/go/bin/story-geth --iliad --syncmode full
+ExecStart=/root/go/bin/story-geth --odyssey --syncmode full
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=4096
@@ -93,15 +93,15 @@ EOF
 ```bash
 sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
 [Unit]
-Description=Story Service
+Description=Story Consensus Client
 After=network.target
 
 [Service]
-ExecStart=/root/go/bin/story run
-WorkingDirectory=/root
 User=root
+ExecStart=/root/go/bin/story run
 Restart=on-failure
-RestartSec=10
+RestartSec=3
+LimitNOFILE=4096
 
 [Install]
 WantedBy=multi-user.target
