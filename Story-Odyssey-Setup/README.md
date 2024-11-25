@@ -68,22 +68,28 @@ story version
 
 2.4. Khởi tạo Story
 ```bash
+# Thay "Your_moniker_name" thành tên muốn đặt
 story init --network iliad --moniker "Your_moniker_name"
 ````
 3. Cấu hình Dịch vụ
 3.1. Cấu hình dịch vụ story-geth
 ```bash
+# lưu ý check gõ pwd là gì thì đổi user="" và pach đổi/root/ thành /user/
 sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
 [Unit]
 Description=Story Geth Client
 After=network.target
 
 [Service]
-User=test
-ExecStart=/home/test/go/bin/story-geth --iliad --syncmode full
+User=root
+ExecStart=/root/go/bin/story-geth --iliad --syncmode full
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
 
 [Install]
 WantedBy=multi-user.target
@@ -97,9 +103,9 @@ Description=Story Service
 After=network.target
 
 [Service]
-ExecStart=/home/test/go/bin/story run
-WorkingDirectory=/home/test
-User=test
+ExecStart=/root/go/bin/story run
+WorkingDirectory=/root
+User=root
 Restart=on-failure
 
 [Install]
