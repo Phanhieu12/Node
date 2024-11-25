@@ -32,12 +32,50 @@ Trước khi bắt đầu, hãy đảm bảo rằng bạn đã cài đặt các 
 ## 2. Cài đặt
 
 ### 2.1. Cài đặt các công cụ cần thiết
-
 ```bash
 sudo apt update
 sudo apt-get update
-sudo apt install lz4 curl iptables build-essential git wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev -y
+sudo apt install lz4 curl iptables build-essential git golang-go wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev -y
 ```
+### a.Tạo thư mục GO
+```bash
+if [ ! -d "$HOME/go/bin" ]; then
+  echo "Directory $HOME/go/bin does not exist. Creating it now."
+  mkdir -p "$HOME/go/bin"
+fi
+````
+### b. tải và cài Cosmovisor
+```bash
+cd ~
+git clone https://github.com/cosmos/cosmos-sdk.git
+cd cosmos-sdk
+make cosmovisor
+sudo mv build/cosmovisor /go/bin/
+mkdir -p /go/bin/cosmos/{genesis,app_data}
+
+#Cấu hình dịch vụ systemd cho Cosmovisor
+sudo tee /etc/systemd/system/cosmovisor.service <<EOF
+[Unit]
+Description=Your Cosmos SDK Application
+After=network.target
+
+[Service]
+User=root
+ExecStart=/root/go/bin/cosmovisor start --home /var/lib/cosmos
+Restart=always
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+#Kiểm tra hoạt động
+sudo systemctl daemon-reload
+sudo systemctl enable cosmovisor.service
+sudo systemctl start cosmovisor.service
+sudo systemctl status cosmovisor.service
+
+````
 2.2. **Tải xuống và cài đặt story-geth**
 ```bash
 # Tải xuống và cài đặt
