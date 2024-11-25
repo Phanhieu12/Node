@@ -186,7 +186,7 @@ sudo systemctl restart story-geth && sudo journalctl -fu story-geth -o cat
 sudo systemctl restart story && sudo journalctl -fu story -o cat
 ````
 
-**5. Validator**
+**5. Validator**  
 **5.1 Tạo**
 - Để tạo trình xác thực, bạn cần có 1024 mã thông báo.
 
