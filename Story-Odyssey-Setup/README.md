@@ -36,7 +36,36 @@ Trước khi bắt đầu, hãy đảm bảo rằng bạn đã cài đặt các 
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
 ```
-### A.Cài Go 1.22.2
+
+### 2.1. Cài đặt Tmux
+```bash
+sudo apt update
+sudo apt install -y tmux
+```
+- Sử dụng cơ bản
+```bash
+Tạo phiên mới:
+
+tmux
+```
+```bash
+Đặt tên cho phiên:
+
+tmux new -s ten_phien
+```
+
+```bash
+Danh sách các phiên đang chạy:
+
+tmux ls
+```
+```bash
+Kết nối lại phiên:
+
+tmux attach -t ten_phien
+```
+- Thoát mà không đóng phiên: Nhấn Ctrl+b rồi nhấn d.
+### 2.3. Cài Go 1.22.2
 ```bash
 ver="1.22.2"
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
