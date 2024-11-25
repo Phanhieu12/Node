@@ -102,6 +102,7 @@ ExecStart=/root/go/bin/story run
 WorkingDirectory=/root
 User=root
 Restart=on-failure
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
