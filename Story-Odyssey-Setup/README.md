@@ -18,8 +18,8 @@ Trước khi bắt đầu, hãy đảm bảo rằng bạn đã cài đặt các 
 | **Yêu cầu** | **Chi tiết** |
 |-------------|--------------|
 | **CPU**     | 4 Cores      |
-| **RAM**     | 8 GB         |
-| **Ổ đĩa**   | 200 GB       |
+| **RAM**     | 16 GB         |
+| **Ổ đĩa**   | 240 GB       |
 | **Băng thông** | 10 MBit/s  |
 
 ### **Ghi chú**
@@ -33,110 +33,92 @@ Trước khi bắt đầu, hãy đảm bảo rằng bạn đã cài đặt các 
 
 ### 2.1. Cài đặt các công cụ cần thiết
 ```bash
-sudo apt update
-sudo apt-get update
-sudo apt install lz4 curl iptables build-essential git wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev -y
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
 ```
-### A.Cài Go
+### A.Cài Go 1.22.2
 ```bash
-# Tải về (ví dụ cho phiên bản Linux x64)
-wget https://go.dev/dl/go1.21.2.linux-amd64.tar.gz
-
-# Giải nén Go vào /usr/local (đảm bảo đã xóa thư mục go cũ)
-sudo tar -C /usr/local -xvzf go1.21.2.linux-amd64.tar.gz
-
-# Cập nhật biến môi trường
-echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.bashrc
-source ~/.bashrc
+ver="1.22.2"
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
 go version
 ````
-### B. Kiểm tra và tạo thư mục $HOME/go/bin nếu không tồn tại
+**2.2. Tải xuống và cài đặt story-geth,story**
 ```bash
-# Kiểm tra và tạo thư mục $HOME/go/bin nếu không tồn tại
-if [ ! -d "$HOME/go/bin" ]; then
-  echo "Directory $HOME/go/bin does not exist. Creating it now."
-  mkdir -p "$HOME/go/bin"
-fi
+cd $HOME && mkdir -p go/bin/
+wget -O geth https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
+chmod +x geth
+mv ~/geth ~/go/bin/geth
+git clone https://github.com/piplabs/story
+cd $HOME/story
+git checkout v0.12.1
+go build -o story ./client
+sudo mv $HOME/story/story $HOME/go/bin/
+mkdir -p ~/.story/story
+mkdir -p ~/.story/geth
 ````
-### C. tải và cài Cosmovisor
+
+**2.2.1 Check story version**
 ```bash
-cd ~
-git clone https://github.com/cosmos/cosmos-sdk.git
-cd cosmos-sdk
-make cosmovisor
-sudo mv build/cosmovisor /go/bin/
-mkdir -p /go/bin/cosmos/{genesis,app_data}
-
-#Cấu hình dịch vụ systemd cho Cosmovisor
-sudo tee /etc/systemd/system/cosmovisor.service <<EOF
-[Unit]
-Description=Your Cosmos SDK Application
-After=network.target
-
-[Service]
-User=root
-ExecStart=/root/go/bin/cosmovisor start --home /var/lib/cosmos
-Restart=always
-LimitNOFILE=4096
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-#Kiểm tra hoạt động
-sudo systemctl daemon-reload
-sudo systemctl enable cosmovisor.service
-sudo systemctl start cosmovisor.service
-sudo systemctl status cosmovisor.service
-
-````
-2.2. **Tải xuống và cài đặt story-geth**
-```bash
-# Tải xuống và cài đặt
-cd $HOME
-wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64
-[ ! -d "$HOME/go/bin" ] && mkdir -p $HOME/go/bin
-if ! grep -q "$HOME/go/bin" $HOME/.profile; then
-  echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.profile
-fi
-chmod +x geth-linux-amd64
-mv $HOME/geth-linux-amd64 $HOME/go/bin/story-geth
-source $HOME/.profile
-story-geth version
-````
-2.3. **Tải xuống và cài đặt story**
-```bash
-# Tải xuống và giải nén tệp cài đặt
-cd $HOME
-rm -rf story-linux-amd64
-wget https://github.com/piplabs/story/releases/download/v0.12.1/story-linux-amd64
-[ ! -d "$HOME/go/bin" ] && mkdir -p $HOME/go/bin
-if ! grep -q "$HOME/go/bin" $HOME/.profile; then
-  echo "export PATH=$PATH:/usr/local/go/bin:~/go/bin" >> ~/.profile
-fi
-chmod +x story-linux-amd64
-sudo cp $HOME/story-linux-amd64 $HOME/go/bin/story
-source $HOME/.profile
 story version
+
+Result(Kết quả)
+- version: v0.12.1-stable
+- git commit: 20fed5e
+````
+**2.2.1 Check story version**
+```bash
+geth version
+
+Result(Kết quả)
+- version: 0.10.1-stable
+- git commit: b60a3ba8d47e60a6c78ca0570f7dac66e8976d93
+- git commit date: 20241025
 ````
 
-2.4. **Khởi tạo Story**
+**2.3 Khởi tạo Story**
 ```bash
-# Thay "Your_moniker_name" thành tên muốn đặt
-story init --network iliad --moniker "Your_moniker_name"
+# Thay "moniker" thành tên muốn đặt
+story init --network odyssey --moniker <moniker>
 ````
-3. **Cấu hình Dịch vụ**
-3.1. **Cấu hình dịch vụ story-geth**
+
+**2.4 Tải xuống genesis**
 ```bash
-# lưu ý check gõ pwd là gì thì đổi user="" và pach đổi/root/ thành /user/
+wget -O $HOME/.story/story/config/genesis.json https://raw.githubusercontent.com/Shoni-O/files/refs/heads/main/testnet-files/story/genesis.json
+
+#Check
+sha256sum $HOME/.story/story/config/genesis.json
+
+Result(Kết quả)
+d332e9082222cc0dd6fe4e9943eafc89b2ce5e118a75ffa01b77e549fdd12587
+````
+
+**2.5 Tải xuống addrbook**
+```bash
+wget -O $HOME/.story/story/config/addrbook.json https://raw.githubusercontent.com/Shoni-O/files/refs/heads/main/testnet-files/story/addrbook.json
+````
+
+**2.6 Bật prometheus và tắt lập chỉ mục**
+```bash
+sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.story/story/config/config.toml
+sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.story/story/config/config.toml
+````
+
+**3. Cấu hình Dịch vụ**  
+**3.1. Cấu hình dịch vụ story-geth**
+```bash
 sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
 [Unit]
 Description=Story Geth Client
 After=network.target
 
 [Service]
-User=root
-ExecStart=/root/go/bin/story-geth --odyssey --syncmode full
+User=$USER
+ExecStart=$HOME/go/bin/geth --odyssey --syncmode full --http --http.api eth,net,web3,engine --http.vhosts '*' --http.addr 127.0.0.1 --http.port 8545 --ws --ws.api eth,web3,net,txpool --ws.addr 127.0.0.1 --ws.port 8546
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=4096
@@ -145,7 +127,8 @@ LimitNOFILE=4096
 WantedBy=multi-user.target
 EOF
 ````
-3.2. **Cấu hình dịch vụ story**
+
+**3.2. Cấu hình dịch vụ story**
 ```bash
 sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
 [Unit]
@@ -153,8 +136,9 @@ Description=Story Consensus Client
 After=network.target
 
 [Service]
-User=root
-ExecStart=/root/go/bin/story run
+User=$USER
+WorkingDirectory=$HOME/.story/story
+ExecStart=$HOME/go/bin/story run
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=4096
@@ -163,39 +147,54 @@ LimitNOFILE=4096
 WantedBy=multi-user.target
 EOF
 ````
-4. **Quản lý Dịch vụ**  
-4.1. **Khởi động dịch vụ**
+
+**4. Khởi động dịch vụ**  
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl start story-geth.service
-sudo systemctl start story.service
+sudo systemctl enable story-geth
+sudo systemctl enable story
+sudo systemctl restart story-geth && sudo journalctl -fu story-geth -o cat
+sudo systemctl restart story && sudo journalctl -fu story -o cat
 ````
-4.1.1 **Check trạng thái**
-```bash
-#check trạng thái của  story-geth
-sudo systemctl status story-geth.service
 
-#check trạng thái của  story
-sudo systemctl status story.service
-````
-4.2. **Dừng dịch vụ**
+**5. Validator**
+**5.1 Tạo**
+- Để tạo trình xác thực, bạn cần có 1024 mã thông báo.
+
+- Làm thế nào để nhận được 1024 mã thông báo?
+
+- Bạn cần chạy nút, để nó đồng bộ hóa mạng. Sau đó đợi biểu mẫu vào ngày 25 và điền vào nó. Nếu bạn được chọn, bạn sẽ nhận được đủ để tạo / đăng ký trình xác thực của mình vào mạng Odyssey.
 ```bash
-sudo systemctl stop story-geth.service
-sudo systemctl stop story.service
+story validator create --stake 1500000000000000000000 --moniker STAVR_Guide --private-key $(cat $HOME/.story/story/config/private_key.txt | grep "PRIVATE_KEY" | awk -F'=' '{print $2}')
 ````
-4.3. **Kích hoạt dịch vụ tự động khởi động cùng hệ thống**
+
+**5.1 Kiểm tra trạng thái nút**
 ```bash
-sudo systemctl enable story-geth.service
-sudo systemctl enable story.service
+curl localhost:26657/status | jq
+or
+story status
 ````
-6. **Khắc phục sự cố**  
-Lỗi không tìm thấy lệnh story-geth hoặc story: Kiểm tra rằng biến môi trường
+
+**5.2 Kiểm tra trạng thái đồng bộ hóa**
 ```bash
-PATH
-đã được thiết lập đúng cách và story-geth và story đã được sao chép vào thư mục $HOME/go/bin chưa?
+curl localhost:26657/status | jq
+or
+story status
 ````
-Lỗi khi khởi động dịch vụ: Kiểm tra logs dịch vụ bằng lệnh 
+
+**5.1 Ví**
 ```bash
-journalctl -u story-geth.service
-journalctl -u story.service
+story validator export
+````
+
+**5.1 Xóa nút**
+```bash
+sudo systemctl stop story-geth story
+sudo systemctl disable story-geth story
+rm /etc/systemd/system/story-geth.service /etc/systemd/system/story.service
+sudo systemctl daemon-reload
+cd $HOME
+rm -rf .story story
+rm -rf $(which story)
+rm -rf $(which geth)
 ````
