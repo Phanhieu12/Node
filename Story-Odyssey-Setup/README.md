@@ -37,34 +37,42 @@ sudo apt update
 sudo apt-get update
 sudo apt install lz4 curl iptables build-essential git golang-go wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev -y
 ```
-### a.Cài Go
+### A.Cài Go
+```bash
+sudo -v
+
+# Bước 1: Kiểm tra và tạo thư mục /usr/local/go nếu chưa có
+if [ ! -d "/usr/local/go" ]; then
+  echo "Directory /usr/local/go does not exist. Creating it now."
+  # Tải Go phiên bản 1.20
+  wget https://dl.google.com/go/go1.20.linux-amd64.tar.gz
+  # Giải nén vào /usr/local
+  sudo tar -C /usr/local -xzf go1.20.linux-amd64.tar.gz
+  # Xóa tệp tar.gz để giải phóng dung lượng
+  rm go1.20.linux-amd64.tar.gz
+fi
+
+# Bước 2: Tạo liên kết mềm từ /usr/local/go/bin/go tới /usr/bin/go
+sudo ln -sf /usr/local/go/bin/go /usr/bin/go
+
+# Bước 3: Cập nhật biến môi trường PATH
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+
+# Bước 4: Áp dụng thay đổi môi trường
+source ~/.bashrc
+
+# Bước 5: Kiểm tra phiên bản Go
+go version
+````
+### B. Kiểm tra và tạo thư mục $HOME/go/bin nếu không tồn tại
 ```bash
 # Kiểm tra và tạo thư mục $HOME/go/bin nếu không tồn tại
 if [ ! -d "$HOME/go/bin" ]; then
   echo "Directory $HOME/go/bin does not exist. Creating it now."
   mkdir -p "$HOME/go/bin"
 fi
-
-# Tải phiên bản Go 1.20 từ trang chính thức
-wget https://go.dev/dl/go1.20.linux-amd64.tar.gz
-
-# Giải nén tệp tải về vào thư mục $HOME/go
-sudo tar -C $HOME -xzf go1.20.linux-amd64.tar.gz
-
-# Xóa tệp tar.gz để giải phóng dung lượng
-rm go1.20.linux-amd64.tar.gz
-
-# Cập nhật PATH trong tệp .profile của người dùng
-echo 'export PATH=$PATH:$HOME/go/bin' >> ~/.profile
-
-# Áp dụng thay đổi môi trường
-source ~/.profile
-
-# Kiểm tra phiên bản Go
-go version
-
 ````
-### b. tải và cài Cosmovisor
+### C. tải và cài Cosmovisor
 ```bash
 cd ~
 git clone https://github.com/cosmos/cosmos-sdk.git
