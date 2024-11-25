@@ -5,8 +5,8 @@
 - [Story-Geth Releases](https://github.com/piplabs/story-geth/releases)
 
 ## **Faucet**
--[Story faucet](https://faucet.story.foundation/)
--[Faucet Me](https://story.faucetme.pro/)
+- [Story faucet](https://faucet.story.foundation/)
+- [Faucet Me](https://story.faucetme.pro/)
 ---
 
 # Hướng dẫn Cài đặt và Chạy Node cho Dự án Story
