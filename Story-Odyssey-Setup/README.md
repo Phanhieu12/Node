@@ -61,8 +61,7 @@ story-geth version
 # Tải xuống và giải nén tệp cài đặt
 wget https://github.com/piplabs/story/releases/download/v0.13.0/story-linux-amd64 -O /root/go/bin/story && \
 chmod +x /root/go/bin/story && \
-rm -rf story-linux-amd64 && \
-story version
+/root/go/bin/story version
 ````
 
 2.4. **Khởi tạo Story**
