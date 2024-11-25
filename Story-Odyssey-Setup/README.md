@@ -50,27 +50,21 @@ fi
 ````
 2.2. Tải xuống và cài đặt story-geth
 ```bash
-# Tải xuống và giải nén tệp
-wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/geth-public/geth-linux-amd64-0.9.2-ea9f0d2.tar.gz
-tar -xzvf geth-linux-amd64-0.9.2-ea9f0d2.tar.gz
-
-# Sao chép tệp geth vào $HOME/go/bin với tên story-geth
-cp geth-linux-amd64-0.9.2-ea9f0d2/geth $HOME/go/bin/story-geth
-
-# Kiểm tra phiên bản story-geth
+# Tải xuống và cài đặt
+wget https://github.com/piplabs/story-geth/releases/download/v0.9.4/geth-linux-amd64 && \
+mv $HOME/story/geth-linux-amd64 $HOME/go/bin/story-geth && \
+chmod +x $HOME/go/bin/story-geth && \
 story-geth version
 ````
 2.3. Tải xuống và cài đặt story
 ```bash
-# Tải xuống và giải nén tệp
-wget https://story-geth-binaries.s3.us-west-1.amazonaws.com/story-public/story-linux-amd64-0.9.11-2a25df1.tar.gz
-tar -xzvf story-linux-amd64-0.9.11-2a25df1.tar.gz
-
-# Sao chép tệp story vào $HOME/go/bin với tên story
-cp story-linux-amd64-0.9.11-2a25df1/story $HOME/go/bin/story
-
-# Kiểm tra phiên bản story
+# Tải xuống và giải nén tệp cài đặt
+wget https://github.com/piplabs/story/releases/download/v0.13.0/story-linux-amd64 && \
+chmod +x story-linux-amd64 && \
+mv story-linux-amd64 $HOME/go/bin/story && \
+rm -rf story* && \
 story version
+n
 ````
 
 2.4. Khởi tạo Story
