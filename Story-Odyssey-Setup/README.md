@@ -38,7 +38,7 @@ sudo apt update
 sudo apt-get update
 sudo apt install lz4 curl iptables build-essential git wget jq make gcc nano tmux htop nvme-cli pkg-config libssl-dev libleveldb-dev tar clang bsdmainutils ncdu unzip libleveldb-dev -y
 ```
-2.1.1 # Tạo thư mục $HOME/go/bin nếu nó chưa tồn tại
+2.1.1 # **Tạo thư mục $HOME/go/bin nếu nó chưa tồn tại**
 ```bash
 [ ! -d "$HOME/go/bin" ] && mkdir -p $HOME/go/bin
 
@@ -48,7 +48,7 @@ if ! grep -q "$HOME/go/bin" $HOME/.bashrc; then
   source $HOME/.bashrc
 fi
 ````
-2.2. Tải xuống và cài đặt story-geth
+2.2. **Tải xuống và cài đặt story-geth**
 ```bash
 # Tải xuống và cài đặt
 wget https://github.com/piplabs/story-geth/releases/download/v0.10.1/geth-linux-amd64 && \
@@ -56,7 +56,7 @@ mv $HOME/geth-linux-amd64 $HOME/go/bin/story-geth && \
 chmod +x $HOME/go/bin/story-geth && \
 story-geth version
 ````
-2.3. Tải xuống và cài đặt story
+2.3. **Tải xuống và cài đặt story**
 ```bash
 # Tải xuống và giải nén tệp cài đặt
 wget https://github.com/piplabs/story/releases/download/v0.13.0/story-linux-amd64 && \
@@ -66,13 +66,13 @@ rm -rf story* && \
 story version
 ````
 
-2.4. Khởi tạo Story
+2.4. **Khởi tạo Story**
 ```bash
 # Thay "Your_moniker_name" thành tên muốn đặt
 story init --network iliad --moniker "Your_moniker_name"
 ````
-3. Cấu hình Dịch vụ
-3.1. Cấu hình dịch vụ story-geth
+3. **Cấu hình Dịch vụ**
+3.1. **Cấu hình dịch vụ story-geth**
 ```bash
 # lưu ý check gõ pwd là gì thì đổi user="" và pach đổi/root/ thành /user/
 sudo tee /etc/systemd/system/story-geth.service > /dev/null <<EOF
@@ -95,7 +95,7 @@ EOF
 WantedBy=multi-user.target
 EOF
 ````
-3.2. Cấu hình dịch vụ story
+3.2. **Cấu hình dịch vụ story**
 ```bash
 sudo tee /etc/systemd/system/story.service > /dev/null <<EOF
 [Unit]
@@ -112,24 +112,32 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 ````
-4. Quản lý Dịch vụ
-4.1. Khởi động dịch vụ
+4. **Quản lý Dịch vụ**  
+4.1. **Khởi động dịch vụ**
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl start story-geth.service
 sudo systemctl start story.service
 ````
-4.2. Dừng dịch vụ
+4.1.1 **Check trạng thái**
+```bash
+#check trạng thái của  story-geth
+sudo systemctl status story-geth.service
+
+#check trạng thái của  story
+sudo systemctl status story.service
+````
+4.2. **Dừng dịch vụ**
 ```bash
 sudo systemctl stop story-geth.service
 sudo systemctl stop story.service
 ````
-4.3. Kích hoạt dịch vụ tự động khởi động cùng hệ thống
+4.3. **Kích hoạt dịch vụ tự động khởi động cùng hệ thống**
 ```bash
 sudo systemctl enable story-geth.service
 sudo systemctl enable story.service
 ````
-6. Khắc phục sự cố 
+6. **Khắc phục sự cố**  
 Lỗi không tìm thấy lệnh story-geth hoặc story: Kiểm tra rằng biến môi trường
 ```bash
 PATH
