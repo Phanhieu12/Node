@@ -1,6 +1,43 @@
 # ✅ CÁCH CÀI WSL TRỰC TIẾP LÊN Ổ KHÁC (VD: D:\WSL\Ubuntu)
 
-## 🧩 Bước 1: Tải file Ubuntu rootfs (dạng `.tar.gz`)
+---
+
+## 🧩 Bước 1: Kích hoạt WSL và các thành phần cần thiết
+1. Mở **PowerShell** với quyền Administrator.
+2. Chạy lần lượt các lệnh sau để kích hoạt WSL và Virtual Machine Platform:
+
+   **Kích hoạt tính năng WSL**:
+   ```powershell
+   dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+   ```
+
+   **Kích hoạt tính năng Virtual Machine Platform (cần cho WSL 2)**:
+   ```powershell
+   dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+   ```
+
+3. **Khởi động lại máy tính** để áp dụng các thay đổi.
+
+---
+
+## 🧩 Bước 2: Cài đặt WSL
+1. Sau khi khởi động lại, chạy lệnh sau để cài đặt WSL:
+   ```powershell
+   wsl --install --no-distribution
+   ```
+   Lệnh này sẽ cài đặt WSL mà không cài đặt bất kỳ bản phân phối Linux nào.
+
+---
+
+## 🧩 Bước 3: Đặt WSL 2 làm phiên bản mặc định
+1. Đảm bảo rằng WSL 2 được sử dụng làm phiên bản mặc định:
+   ```powershell
+   wsl --set-default-version 2
+   ```
+
+---
+
+## 🧩 Bước 4: Tải file Ubuntu rootfs (dạng `.tar.gz`)
 1. Truy cập trang:  
    👉 [https://cloud-images.ubuntu.com/wsl/](https://cloud-images.ubuntu.com/wsl/)
 2. Chọn phiên bản Ubuntu bạn muốn (ví dụ: `focal`, `jammy`, ...).
@@ -9,7 +46,7 @@
 
 ---
 
-## 🧩 Bước 2: Nhập bản phân phối Ubuntu vào ổ D:
+## 🧩 Bước 5: Nhập bản phân phối Ubuntu vào ổ D:
 1. Mở **PowerShell** với quyền Administrator.
 2. Chạy lệnh sau:
 
@@ -25,7 +62,7 @@
 
 ---
 
-## 🧩 Bước 3: Chạy Ubuntu đã cài
+## 🧩 Bước 6: Chạy Ubuntu đã cài
 Sau khi cài đặt xong, bạn có thể chạy Ubuntu bằng lệnh:
 
 ```powershell
@@ -43,4 +80,12 @@ wsl -d Ubuntu
 
 ---
 
-Bạn có muốn mình giúp bạn chọn đúng bản Ubuntu `.tar.gz` và cung cấp lệnh đầy đủ phù hợp với hệ thống của bạn không?
+## 🧩 Lưu ý:
+1. **Kiểm tra phiên bản Windows**: WSL 2 yêu cầu Windows 10 phiên bản 1903 (bản build 18362) trở lên. Bạn có thể kiểm tra phiên bản Windows của mình bằng cách chạy:
+   ```powershell
+   winver
+   ```
+
+2. **Cập nhật Kernel WSL**: Nếu kernel WSL đã lỗi thời, bạn có thể tải bản cập nhật từ trang Microsoft WSL: [https://aka.ms/wsl2kernel](https://aka.ms/wsl2kernel).
+
+Nếu bạn vẫn gặp lỗi hoặc cần hỗ trợ thêm, hãy cung cấp thêm thông tin để tôi có thể giúp bạn chi tiết hơn!
