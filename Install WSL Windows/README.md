@@ -71,21 +71,22 @@
 
 ---
 
-## 🧩 Bước 7: Chạy WSL
-1. Sau khi cài đặt xong, bạn có thể chạy WSL với lệnh mặc định:
+## 🧩 Bước 7: Mở lại WSL
+1. Nếu bạn muốn mở lại **WSL**, sử dụng lệnh:
    ```powershell
    wsl
    ```
-   Lệnh này sẽ mở bản phân phối mặc định mà bạn vừa cài đặt (ví dụ: `Ubuntu`).
-2. Nếu bạn có nhiều bản phân phối và muốn kiểm tra danh sách, sử dụng:
+   Lệnh này sẽ mở bản phân phối mặc định.
+2. Nếu bạn có nhiều bản phân phối, kiểm tra danh sách các bản phân phối đã cài bằng lệnh:
    ```powershell
    wsl --list --verbose
    ```
-3. Nếu muốn thay đổi bản phân phối mặc định, sử dụng:
+   Lệnh này hiển thị các bản phân phối cùng trạng thái.
+3. Nếu bạn muốn đặt một bản phân phối mặc định, sử dụng lệnh:
    ```powershell
    wsl --set-default <Tên_Bản_Phân_Phối>
    ```
-   **Ví dụ:**  
+   **Ví dụ:**
    ```powershell
    wsl --set-default Ubuntu
    ```
