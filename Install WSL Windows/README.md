@@ -63,13 +63,32 @@
 ---
 
 ## 🧩 Bước 6: Chạy Ubuntu đã cài
-Sau khi cài đặt xong, bạn có thể chạy Ubuntu bằng lệnh:
+1. Để chạy Ubuntu, sử dụng lệnh:
+   ```powershell
+   wsl -d Ubuntu
+   ```
+2. Lần đầu tiên chạy, hệ thống sẽ yêu cầu bạn tạo **username** và **mật khẩu**.
 
-```powershell
-wsl -d Ubuntu
-```
+---
 
-- Lần đầu tiên chạy, hệ thống sẽ yêu cầu bạn tạo **username** và **mật khẩu**.
+## 🧩 Bước 7: Chạy WSL
+1. Sau khi cài đặt xong, bạn có thể chạy WSL với lệnh mặc định:
+   ```powershell
+   wsl
+   ```
+   Lệnh này sẽ mở bản phân phối mặc định mà bạn vừa cài đặt (ví dụ: `Ubuntu`).
+2. Nếu bạn có nhiều bản phân phối và muốn kiểm tra danh sách, sử dụng:
+   ```powershell
+   wsl --list --verbose
+   ```
+3. Nếu muốn thay đổi bản phân phối mặc định, sử dụng:
+   ```powershell
+   wsl --set-default <Tên_Bản_Phân_Phối>
+   ```
+   **Ví dụ:**  
+   ```powershell
+   wsl --set-default Ubuntu
+   ```
 
 ---
 
