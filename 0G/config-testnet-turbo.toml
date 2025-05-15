@@ -148,7 +148,7 @@ log_sync_start_block_number = 1
 #######################################################################
 
 # Log configuration file.
- log_config_file = "/home/phanhieu/0g-storage-node/run/log_config"
+ log_config_file = "/0g-storage-node/run/log_config"
 
 # Log directory.
  log_directory = "log"
